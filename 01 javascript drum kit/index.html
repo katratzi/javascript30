@@ -46,6 +46,11 @@
       </div>
     </div>
 
+    <div class="note" id="lastKey">
+
+:)
+    </div>
+
     <audio data-key="65" src="sounds/clap.wav"></audio>
     <audio data-key="83" src="sounds/hihat.wav"></audio>
     <audio data-key="68" src="sounds/kick.wav"></audio>
@@ -63,6 +68,8 @@
 
       // play the correct sound matched with key code
       function playSound(e) {
+
+          noteKey(e);
         // debug log the event keycode
         // console.log("keycode " + e.keyCode);
         // normal playback of single audio
@@ -86,6 +93,14 @@
         // now remove the playing class
         this.classList.remove("playing");
       }
+
+function noteKey(e)
+{
+    console.log(e.code + " " + e.keyCode);
+    var div = document.getElementById('lastKey');
+    console.log(div);
+    div.innerHTML = e.code + " - " + e.keyCode;
+}
 
       // add event listeners to all our key elements
       const keys = document.querySelectorAll(".key");
