@@ -1,6 +1,6 @@
 html {
     font-size: 10px;
-    background: url(http://i.imgur.com/b9r5sEL.jpg) bottom center;
+    background: url(http://i.imgur.com/b9r5sEL.jpg) top center;
     background-size: cover;
   }
   
@@ -13,7 +13,7 @@ html {
   .keys {
     display: flex;
     flex: 1;
-    min-height: 100vh;
+    min-height: 60vh;
     align-items: center;
     justify-content: center;
   }
@@ -49,8 +49,11 @@ html {
     padding: 0.2em;
     width: 25%;        
     font-size: 3rem;           
-    border: 2px solid #ddd;    
+    border: .4rem solid black;
+    border-radius: .5rem;    
     text-align: center;
+    color: #ddd;
+    background: rgba(0.1,0.1,0.1,0.4);
   }
 
   .sound {
