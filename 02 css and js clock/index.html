@@ -84,7 +84,17 @@ function setDate()
   // first the seconds - with degrees for rotation
   const seconds = now.getSeconds();
   const secondsDegrees = ((seconds / 60) * 360) + 90;
-  secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+  // smooth out the 60 sec transition
+  if(seconds == 0)
+  {
+    secondHand.style.transition = 'all 0s';
+    secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+  }
+  else
+  {
+    secondHand.style.transition = 'all 0.05s';
+    secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+  }
   // next the minutes
   const minutes = now.getMinutes();
   const minutesDegrees = ((minutes / 60) * 360) + 90;
