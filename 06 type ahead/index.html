@@ -1,60 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Type Ahead 👀</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
 
-  <body>
-    <form class="search-form">
-      <input type="text" class="search" placeholder="City or State" />
-      <ul class="suggestions">
-        <li>Filter for a city</li>
-        <li>or a state</li>
-      </ul>
-    </form>
-    <script>
-      const endpoint =
-        "https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json";
+<head>
+  <meta charset="UTF-8" />
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
 
-      const cities = [];
+<body>
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State" />
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+  
+  
+  <script>
+    const endpoint =
+      "https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json";
 
-      // fetch is a new call, and returns a 'promise'.
-      //fetch(endpoint).then(blob => console.log(blob));
-      fetch(endpoint)
-        .then(blob => blob.json())
-        .then(data => cities.push(...data)); // clever es6 spread functionality
+    const cities = [];
 
-      function findMatches(wordToMatch, cities) {
-        return cities.filter(place => {
-          // here we need to figure out if the city or state matches what
-          // was searched
-          const regex = new RegExp(wordToMatch, "gi"); // g for global, i for insensitive
-          return place.city.match(regex) || place.state.match(regex);
-        });
-      }
+    // fetch is a new call, and returns a 'promise'.
+    //fetch(endpoint).then(blob => console.log(blob));
+    fetch(endpoint)
+      .then(blob => blob.json())
+      .then(data => cities.push(...data)); // clever es6 spread functionality
 
-function displayMatches(){
-//console.log(this.value);
-const matchArray = findMatches(this.value, cities);
-const html = matchArray.map(place => {
-return `
-<li>
-<span class = "name">${place.city},${place.state}</span>
-<span class = "population">${place.population}</span>
-  </li>
-`;
-}).join(''); // would return an array without the join at the end
-suggestions.innerHTML = html;
+// little helper to neatly format the ppopulation
+      function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
-const searchInput = document.querySelector('.search');
-const suggestions = document.querySelector('.suggestions');
+    function findMatches(wordToMatch, cities) {
+      return cities.filter(place => {
+        // here we need to figure out if the city or state matches what
+        // was searched
+        const regex = new RegExp(wordToMatch, "gi"); // g for global, i for insensitive
+        return place.city.match(regex) || place.state.match(regex);
+      });
+    }
 
-searchInput.addEventListener('change',displayMatches); // only when you click off
-searchInput.addEventListener('keyup',displayMatches); // so subscribe to key up too
+    function displayMatches() {
+      //console.log(this.value);
+      const matchArray = findMatches(this.value, cities);
+      const html = matchArray.map(place => {
+        const regex = new RegExp(this.value, 'gi');
+        const cityName = place.city.replace(regex, `<span class="hl">${this.value}</span>`);
+        const stateName = place.state.replace(regex, `<span class="hl">${this.value}</span>`);        
+        return `
+<li>
+<span class = "name">${cityName},${stateName}</span>
+<span class = "population">${numberWithCommas(place.population)}</span>
+  </li>
+`;
+      }).join(''); // would return an array without the join at the end
+      suggestions.innerHTML = html;
+    }
 
-    </script>
-  </body>
+    const searchInput = document.querySelector('.search');
+    const suggestions = document.querySelector('.suggestions');
+
+    searchInput.addEventListener('change', displayMatches); // only when you click off
+    searchInput.addEventListener('keyup', displayMatches); // so subscribe to key up too
+
+  </script>
+</body>
+
 </html>
