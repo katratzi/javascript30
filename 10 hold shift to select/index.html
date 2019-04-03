@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Hold Shift to Check Multiple Checkboxes</title>
+</head>
+
+<body>
+  <style>
+    html {
+      font-family: sans-serif;
+      background: #ffc600;
+    }
+
+    .inbox {
+      max-width: 400px;
+      margin: 50px auto;
+      background: white;
+      border-radius: 5px;
+      box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .item {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #F1F1F1;
+    }
+
+    .item:last-child {
+      border-bottom: 0;
+    }
+
+    input:checked+p {
+      background: #F9F9F9;
+      text-decoration: line-through;
+    }
+
+    input[type="checkbox"] {
+      margin: 20px;
+    }
+
+    p {
+      margin: 0;
+      padding: 20px;
+      transition: background 0.2s;
+      flex: 1;
+      font-family: 'helvetica neue';
+      font-size: 20px;
+      font-weight: 200;
+      border-left: 1px solid #D1E2FF;
+    }
+  </style>
+  <!--
+   The following is a common layout you would see in an email client.
+
+   When a user clicks a checkbox, holds Shift, and then clicks another checkbox a few rows down, all the checkboxes inbetween those two checkboxes should be checked.
+
+  -->
+
+  <div class="inbox">
+    <div class="item">
+      <input type="checkbox">
+      <p>This is an inbox layout.</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Check one item</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Hold down your Shift key</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Check a lower item</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Everything in between should also be set to checked</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Try to do it without any libraries</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Just regular JavaScript</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Good Luck!</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Don't forget to tweet your result!</p>
+    </div>
+  </div>
+
+  <script>
+
+    var firstIndex = -1;
+    var isShiftDown = false;
+    let lastChecked;
+
+    // listen for keydown presses
+    window.addEventListener("keydown", logKeyDown);
+    window.addEventListener("keyup", logKeyUp);
+
+    function logKeyDown(e) {
+      //console.log(` ${e.keyCode}`); // debug
+      if (e.keyCode === 16) // 16 is left shift
+      {
+        isShiftDown = true;
+        console.log("shift." + isShiftDown);
+      }
+    }
+
+    function logKeyUp(e) {
+      //console.log(` ${e.keyCode}`); // debug
+      if (e.keyCode === 16) // 16 is left shift
+      {
+        isShiftDown = false;
+        console.log("shift." + isShiftDown);
+      }
+    }
+
+
+    // want to get all the checkboxes
+    // and want as array not a node list, so use new spread operator
+    const checkboxes = [...document.querySelectorAll(".inbox input[type='checkbox']")];
+    console.log(checkboxes);
+
+    // now subscribe to their changes
+    checkboxes.forEach(box => {
+      // console.log(box.checked); // debug
+      // note change can be used, but click also handles keyboard selection
+      box.addEventListener('click', checkBoxChanged);
+    });
+
+    function checkBoxChanged() {
+      // what index in the checkboxes array is this
+      var index = checkboxes.indexOf(this)
+
+      // now if the shift key is NOT down, assign this to first click
+      if (!isShiftDown) {
+        firstClick = index;
+        console.log("first." + index + this.checked);
+      }
+      else // shift key is down...so now mark all checkboxes between first and index true
+      {
+        //console.log("mark all between." + firstClick + " & " + index);
+        var low = (index < firstClick) ? index : firstClick;
+        var high = (index > firstClick) ? index : firstClick;
+
+        for (var i = 0; i < checkboxes.length; i++) {
+          if (i >= low && i <= high) {
+            checkboxes[i].checked = true;
+          }
+        }
+      }
+    }
+
+  </script>
+
+
+</body>
+
+</html>
