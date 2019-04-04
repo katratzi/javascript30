@@ -99,31 +99,7 @@
 
   <script>
 
-    var firstIndex = -1;
-    var isShiftDown = false;
     let lastChecked;
-
-    // listen for keydown presses
-    window.addEventListener("keydown", logKeyDown);
-    window.addEventListener("keyup", logKeyUp);
-
-    function logKeyDown(e) {
-      //console.log(` ${e.keyCode}`); // debug
-      if (e.keyCode === 16) // 16 is left shift
-      {
-        isShiftDown = true;
-        console.log("shift." + isShiftDown);
-      }
-    }
-
-    function logKeyUp(e) {
-      //console.log(` ${e.keyCode}`); // debug
-      if (e.keyCode === 16) // 16 is left shift
-      {
-        isShiftDown = false;
-        console.log("shift." + isShiftDown);
-      }
-    }
 
 
     // want to get all the checkboxes
@@ -138,27 +114,24 @@
       box.addEventListener('click', checkBoxChanged);
     });
 
-    function checkBoxChanged() {
-      // what index in the checkboxes array is this
-      var index = checkboxes.indexOf(this)
+    function checkBoxChanged(e) {
 
-      // now if the shift key is NOT down, assign this to first click
-      if (!isShiftDown) {
-        firstClick = index;
-        console.log("first." + index + this.checked);
-      }
-      else // shift key is down...so now mark all checkboxes between first and index true
-      {
-        //console.log("mark all between." + firstClick + " & " + index);
-        var low = (index < firstClick) ? index : firstClick;
-        var high = (index > firstClick) ? index : firstClick;
-
-        for (var i = 0; i < checkboxes.length; i++) {
-          if (i >= low && i <= high) {
-            checkboxes[i].checked = true;
+      let inBetween = false;
+      // check if the shift key is down
+      // AND check that they are checking it
+      if (e.shiftKey && this.checked) {
+        // go ahead and mark all inbetween
+        checkboxes.forEach(checkBox => {
+          if (checkBox === this || checkBox === lastChecked) {
+            inBetween = !inBetween;
           }
-        }
+          // check true if in between          
+          if (inBetween) {
+            checkBox.checked = true;
+          }
+        });
       }
+      lastChecked = this;
     }
 
   </script>
