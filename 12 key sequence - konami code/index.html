@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Key Detection</title>
+  <script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>
+</head>
+
+<body>
+
+  <script>
+
+    // the code is up up down down left right left right b a
+    // keycodes are... 38 38 40 40 37 39 37 39 66 65
+    const konamiCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]
+    let currentIndex = 0;
+
+    // listen for key events
+    window.addEventListener('keyup', checkCode)
+
+    // at each key press check if we matched the next keycode in our sequence
+    // if not reset counter
+    function checkCode(e) {
+      if (e.keyCode === konamiCode[currentIndex]) {
+        console.log("konami " + e.keyCode + " " + currentIndex);
+        // complete code
+        if (currentIndex == konamiCode.length) {
+          console.log("complete");
+          cornify_add();
+          currentIndex = 0; // reset
+        }
+        else // check next
+        {
+          currentIndex++;
+        }
+      }
+      else // reset
+      {
+        currentIndex = 0;
+      }
+    }
+
+    // another approach is to store keys pressed in an array and match
+    const pressed = [];
+    const secretCode = "hello";
+
+
+    // another approach
+    window.addEventListener('keyup', (e) => {
+      pressed.push(e.key); // add to array
+      // keep array at max length of our code
+      pressed.splice(-secretCode.length - 1, pressed.length - secretCode.length);
+
+      // convert to string then check if we match the code
+      if (pressed.join('').includes(secretCode)) {
+        console.log('Secret code accepted');
+        cornify_add();
+      }
+    });
+
+  </script>
+
+</body>
+
+</html>
