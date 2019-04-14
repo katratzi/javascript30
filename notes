@@ -1,1 +1,10 @@
 change a variable name in VS.code - Ctrl F2
+
+toggle outlining
+fold/unfold all
+ctrl+K ctrl + 0
+ctrl+K ctrl + J
+
+fold/unfold section
+ctrl + shift + [
+ctrl + shift + ]
