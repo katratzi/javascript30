@@ -11,5 +11,5 @@ ctrl + shift + ]
 
 regular expression notes
 /^ is start with & 'i' is case insensitive 
-remember no space after | for the or. 
+remember no space after '|' for the or. 
 ...name.replace(/^(a |the |an)/i, ''); //replace with nothing
