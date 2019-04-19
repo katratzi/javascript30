@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Sort Without Articles</title>
 </head>
+
 <body>
 
   <style>
@@ -26,12 +28,12 @@
       padding: 0;
       box-shadow: 0 0 0 20px rgba(0, 0, 0, 0.05);
     }
-    
+
     #bands li {
       border-bottom: 1px solid #efefef;
       padding: 20px;
     }
-    
+
     #bands li:last-child {
       border-bottom: 0;
     }
@@ -40,7 +42,6 @@
       color: #ffc600;
       text-decoration: none;
     }
-
   </style>
 
   <ul id="bands">
@@ -48,48 +49,29 @@
 
   </ul>
 
-<script>
-const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
+  <script>
+    const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
 
-// get the bands UL element
-const list = document.querySelector('#bands');
+    // get the bands UL element
+    const list = document.querySelector('#bands');
 
-// strip out articles
-function strip(bandName)
-{
-  // regular expression... /^ is start with
-  return bandName.replace(/^(a |the |an)/i, '').trim();
-}
+    // strip out articles
+    function strip(bandName) {
+      // regular expression... /^ is start with
+      return bandName.replace(/^(a |the |an)/i, '').trim();
+    }
 
-// sort the list alphabetically
-const sortedBands = bands.sort(function (a,b) {
-  if(strip(a) > strip(b))
-  {
-    return 1;
-  }
-  else
-  {
-    return -1;
-  }
-})
+    // sort the list alphabetically
+    const sortedBands = bands.sort((a, b) => strip(a) > strip(b) ? 1 : -1);
 
-console.log(sortedBands);
-// now parse it into list elements
-addToList(sortedBands);
+    // not add to the list..iterate over with map -> html list elements -> join
+    document.querySelector('#bands').innerHTML =
+      sortedBands
+        .map(band => `<li>${band}</li>`)
+        .join('');
 
-// go through all elements with map, and create a list element
-function addToList(array)
-{
-  // map goes through all elements and we get an array back
-  const arrayHtml = array.map((element) => {
-        return `
-      <li>${element}</li>`;
-      });
-      // join takes the array that the map produces and turns it into a string for us
-      list.innerHTML = arrayHtml.join('');      
-}
-
-</script>
+  </script>
 
 </body>
+
 </html>

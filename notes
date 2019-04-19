@@ -13,3 +13,24 @@ regular expression notes
 /^ is start with & 'i' is case insensitive 
 remember no space after '|' for the or. 
 ...name.replace(/^(a |the |an)/i, ''); //replace with nothing
+
+sorting array
+const sortedBands = bands.sort(function (a,b) {
+  if(strip(a) > strip(b))
+  {
+    return 1;
+  }
+  else
+  {
+    return -1;
+  }
+})
+
+// simplify to...
+const sortedBands = bands.sort((a.b) => {
+    return strip(a) > strip(b) ? 1 : -1;
+}
+
+// and if the only thing you're doing is a return...
+// can even simplify further to
+const sortedBands = bands.sort((a.b) => strip(a) > strip(b) ? 1 : -1);
