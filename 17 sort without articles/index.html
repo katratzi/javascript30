@@ -54,15 +54,28 @@ const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'N
 // get the bands UL element
 const list = document.querySelector('#bands');
 
-// first sort the list alphabetically
-sortArray(bands);
-// now parse it into list elements
-addToList(bands);
-
-function sortArray(toSort)
+// strip out articles
+function strip(bandName)
 {
-  toSort.sort((a, b) => a > b ? 1 : -1)  
+  // regular expression... /^ is start with
+  return bandName.replace(/^(a |the |an)/i, '').trim();
 }
+
+// sort the list alphabetically
+const sortedBands = bands.sort(function (a,b) {
+  if(strip(a) > strip(b))
+  {
+    return 1;
+  }
+  else
+  {
+    return -1;
+  }
+})
+
+console.log(sortedBands);
+// now parse it into list elements
+addToList(sortedBands);
 
 // go through all elements with map, and create a list element
 function addToList(array)
