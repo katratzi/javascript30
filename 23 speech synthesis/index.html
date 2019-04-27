@@ -43,10 +43,11 @@
     // get all the available system voices
     function populateVoices() {
       voices = this.getVoices();
-      console.log(voices);
+      // console.log(voices); debug
 
       // go through and for each one create a drop down option
       const voiceOptions = voices
+        .filter(voice => voice.lang.includes('en')) // only english please
         .map(voice => `<option value="${voice.name}">${voice.name} (${voice.lang}))</option>`)
         .join('');
       // set the options
@@ -57,11 +58,36 @@
       // console.log(this.value); // name of voice
       // so match this with voice
       msg.voice = voices.find(voice => voice.name === this.value);
+      toggle();
+    }
+
+    function toggle(startOver = true) {
+      speechSynthesis.cancel(); // stop playback
+      if (startOver) {
+        speechSynthesis.speak(msg);
+      }
+    }
+
+// when ever we change one of the options
+    function setOption()
+    {
+      // what we have messed with...
+      console.log(this.name, this.value);
+      // so simply set the correct value
+      msg[this.name] = this.value;
+      toggle();
     }
 
     speechSynthesis.addEventListener('voiceschanged', populateVoices);
     voicesDropdown.addEventListener('change', setVoice);
-    
+    options.forEach(option => option.addEventListener('change', setOption));
+     // hook up the speak button
+    speakButton.addEventListener('click', toggle);
+     // one way to call a function with a value
+    // stopButton.addEventListener('click', function() {toggle(false);});
+    // neater ways
+    //stopButton.addEventListener('click', toggle.bind(null, false));
+    stopButton.addEventListener('click', () => toggle(false));
 
 
   </script>
