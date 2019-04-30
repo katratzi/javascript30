@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Understanding JavaScript's Capture</title>
+</head>
+<body class="bod">
+
+  <div class="one">
+    <div class="two">
+      <div class="three">
+      </div>
+    </div>
+  </div>
+
+<style>
+  html {
+    box-sizing: border-box;
+  }
+  
+  *, *:before, *:after { 
+    box-sizing: inherit; 
+  }
+
+  div {
+    width: 100%;
+    padding: 100px;
+  }
+
+  .one {
+    background: thistle;
+  }
+
+  .two {
+    background: mistyrose;
+  }
+
+  .three {
+    background: coral;
+  }
+</style>
+
+<button>Hello</button>
+<script>
+const divs = document.querySelectorAll('div');
+const button = document.querySelector('button');
+
+function logText(e)
+{
+  console.log(this.classList.value);
+  
+  // e.stopPropagation(); 
+  // with this call...stop propogating through the triggers
+  // works with capture set to true/false - ie going down or up the hierarchy
+  
+}
+
+//document.body.addEventListener('click', logText);
+// divs.forEach(div => div.addEventListener('click', logText));
+
+
+// event capture...when you click it goes 'down' the hierarchy
+// then it 'bubbles' back up and triggers the event for each element
+
+// so with this option of capture: true...we run the function on the way down
+//divs.forEach(div => div.addEventListener('click', logText, {capture: true}));
+// output. three, two, one
+
+// divs.forEach(div => div.addEventListener('click', logText, {capture: false})); // false is default
+
+divs.forEach(div => div.addEventListener('click', logText, {
+  capture: false, // false is default
+  once: true // once triggers...will remove (ie unbind) from future events
+  })); 
+
+// so adding a third option of once: true...the click only happens once
+// useful for store front buttons :)
+  button.addEventListener('click', () => {
+    console.log('Click!!!');
+  }, { once: true})
+
+</script>
+</body>
+</html>
