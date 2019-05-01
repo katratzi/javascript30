@@ -226,23 +226,50 @@
   const background = document.querySelector('.dropdownBackground');
   const nav  = document.querySelector('.top');
 
-  function handleEnter()
-  {    
-    this.classList.add('trigger-enter');
-    // setTimeout(function() {
-    //   console.log(this); // this won't work as you get 'window' ... instead use...
-    // setTimeout(() => {
-    //   console.log(this);
-    //   this.classList.add('triger-enter-active');
-    // }, 150);
-    // which can be neatened up with...
-    setTimeout(() => this.classList.add('trigger-enter-active'), 150);
-  }
+  function handleEnter() {
+      this.classList.add('trigger-enter');
+      // setTimeout(function() {
+      //   console.log(this); // this won't work as you get 'window' ... instead use...
+      // setTimeout(() => {
+      //   console.log(this);
+      //   this.classList.add('triger-enter-active');
+      // }, 150);
+      // which can be neatened up with...
+      //setTimeout(() => this.classList.add('trigger-enter-active'), 150);
+
+      // because of the timeout we need to check if we're still wanted to add
+      setTimeout(() => {
+        if (this.classList.contains('trigger-enter')) {
+          this.classList.add('trigger-enter-active')
+        }
+      }, 150);
+
+      background.classList.add('open'); // show background
+
+      // get the dropdown that exists within this li element
+      const dropdown = this.querySelector('.dropdown');
+      console.log(dropdown); // debug
+      const dropdownCoords = dropdown.getBoundingClientRect(); // get our coordinates
+      const navCoords = nav.getBoundingClientRect(); // and parentcoordinate too (think Unity local hierarchy)
+
+      const coords = {
+        height: dropdownCoords.height,
+        width: dropdownCoords.width,
+        top: dropdownCoords.top - navCoords.top,
+        left: dropdownCoords.left - navCoords.left,
+      }
+
+      background.style.setProperty('height', `${coords.height}px`);
+      background.style.setProperty('width', `${coords.width}px`)
+      background.style.setProperty('transform', `translate(${coords.left}px, ${coords.top}px`)
+
+    } 
 
   function handleLeave()
   {
     // simply remove the classes 
     this.classList.remove('trigger-enter', 'trigger-enter-active');
+    background.classList.remove('open'); // hide background
   }
 
   triggers.forEach(trigger => trigger.addEventListener('mouseenter', handleEnter));
