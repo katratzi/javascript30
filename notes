@@ -38,3 +38,6 @@ const sortedBands = bands.sort((a.b) => strip(a) > strip(b) ? 1 : -1);
 
 // class selector with > children of
 const triggers = document.querySelectorAll('.cool > li'); // all descendant of cool
+
+// console log trick, get nicer output by throwing them into an object
+console.log({x,startX}); 
