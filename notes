@@ -41,3 +41,8 @@ const triggers = document.querySelectorAll('.cool > li'); // all descendant of c
 
 // console log trick, get nicer output by throwing them into an object
 console.log({x,startX}); 
+
+// when dealing with dataset
+e.g. <button data-time="20">
+// get it with the 'dataset' attribute
+this.dataset.time
