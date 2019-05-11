@@ -46,3 +46,6 @@ console.log({x,startX});
 e.g. <button data-time="20">
 // get it with the 'dataset' attribute
 this.dataset.time
+
+// interesting...clicks have an isTrusted bool.  you can simulate mouse clicks
+// with script, but isTrusted means it came from the user
